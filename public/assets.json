@@ -1,0 +1,146 @@
+{
+  "3D Models": [
+    {
+      "name": "Cube",
+      "file": "/assets/models/Cube.fbx",
+      "price": "FREE",
+      "thumbnail": "/assets/thumbnails/Cube.png"
+    },
+    {
+      "name": "Cylinder",
+      "file": "/assets/models/Cylinder.fbx",
+      "price": "FREE",
+      "thumbnail": "/assets/thumbnails/Cylinder.png"
+    },
+    {
+      "name": "Donut",
+      "file": "/assets/models/donut.fbx",
+      "price": "FREE",
+      "thumbnail": "/assets/thumbnails/Donut.png"
+    },
+    {
+      "name": "Table",
+      "file": "/assets/models/table.fbx",
+      "price": "FREE",
+      "thumbnail": "/assets/thumbnails/Table.png"
+    },
+    {
+      "name": "Chair",
+      "file": "/assets/models/Chair.fbx",
+      "price": "FREE",
+      "thumbnail": "/assets/thumbnails/Chair.png"
+    },
+    {
+      "name": "Axe",
+      "file": "/assets/models/Axe.fbx",
+      "price": "FREE",
+      "thumbnail": "/assets/thumbnails/Axe.png"
+    },
+    {
+      "name": "Timba",
+      "file": "/assets/models/Timba.fbx",
+      "price": "FREE",
+      "thumbnail": "/assets/thumbnails/Timba.png"
+    },
+    {
+      "name": "Pikachu",
+      "file": "/assets/models/Pikachu.fbx",
+      "price": "FREE",
+      "thumbnail": "/assets/thumbnails/Pikachu.png"
+    },
+    {
+      "name": "Iron Man",
+      "file": "/assets/models/Iron Man.fbx",
+      "price": "FREE",
+      "thumbnail": "/assets/thumbnails/Iron Man.png"
+    }
+  ],
+  "Lighting Profiles": [
+    {
+      "name": "Autumn Field",
+      "file": "/assets/HDRIs/autumn_field_puresky_4k.hdr",
+      "price": "FREE",
+      "thumbnail": "/assets/thumbnails/Autumn Field.png"
+    },
+    {
+      "name": "Goegap Road",
+      "file": "/assets/HDRIs/goegap_road_4k.hdr",
+      "price": "FREE",
+      "thumbnail": "/assets/thumbnails/Goegap Road.png"
+    },
+    {
+      "name": "Qwantani Sunrise",
+      "file": "/assets/HDRIs/qwantani_sunrise_4k.hdr",
+      "price": "FREE",
+      "thumbnail": "/assets/thumbnails/Qwantani Sunrise.png"
+    },
+    {
+      "name": "Wildflower Field",
+      "file": "/assets/HDRIs/wildflower_field_4k.hdr",
+      "price": "FREE",
+      "thumbnail": "/assets/thumbnails/Wildflower Field.png"
+    },
+    {
+      "name": "Blue Photo Studio",
+      "file": "/assets/HDRIs/blue_photo_studio_4k.hdr",
+      "price": "FREE",
+      "thumbnail": "/assets/thumbnails/Blue Photo Studio.png"
+    },
+    {
+      "name": "Brown Photo Studio",
+      "file": "/assets/HDRIs/brown_photostudio_02_4k.hdr",
+      "price": "FREE",
+      "thumbnail": "/assets/thumbnails/Brown Photo Studio.png"
+    },
+    {
+      "name": "Christmas Photo Studio",
+      "file": "/assets/HDRIs/christmas_photo_studio_01_4k.hdr",
+      "price": "FREE",
+      "thumbnail": "/assets/thumbnails/Christmas Photo Studio.png"
+    },
+    {
+      "name": "Small Studio",
+      "file": "/assets/HDRIs/studio_small_06_4k.hdr",
+      "price": "FREE",
+      "thumbnail": "/assets/thumbnails/Small Studio.png"
+    }
+  ],
+  "Materials & Textures": [
+    {
+      "name": "Cliff Side",
+      "thumbnail": "/assets/textures/cliff_side_4k/cliff_side_diff_4k.jpg",
+      "maps": {
+        "diffuse": "/assets/textures/cliff_side_4k/cliff_side_diff_4k.jpg",
+        "normal": "/assets/textures/cliff_side_4k/cliff_side_nor_gl_4k.jpg",
+        "arm": "/assets/textures/cliff_side_4k/cliff_side_arm_4k.jpg"
+      }
+    },
+    {
+      "name": "Herringbone Pavement",
+      "thumbnail": "/assets/textures/herringbone_pavement_02_4k/herringbone_pavement_02_diff_4k.jpg",
+      "maps": {
+        "diffuse": "/assets/textures/herringbone_pavement_02_4k/herringbone_pavement_02_diff_4k.jpg",
+        "normal": "/assets/textures/herringbone_pavement_02_4k/herringbone_pavement_02_nor_gl_4k.jpg",
+        "arm": "/assets/textures/herringbone_pavement_02_4k/herringbone_pavement_02_arm_4k.jpg"
+      }
+    },
+    {
+      "name": "Rocky Terrain",
+      "thumbnail": "/assets/textures/rocky_terrain_02_4k/rocky_terrain_02_diff_4k.jpg",
+      "maps": {
+        "diffuse": "/assets/textures/rocky_terrain_02_4k/rocky_terrain_02_diff_4k.jpg",
+        "normal": "/assets/textures/rocky_terrain_02_4k/rocky_terrain_02_nor_gl_4k.jpg",
+        "arm": "/assets/textures/rocky_terrain_02_4k/rocky_terrain_02_arm_4k.jpg"
+      }
+    },
+    {
+      "name": "Rosewood Veneer",
+      "thumbnail": "/assets/textures/rosewood_veneer1_4k/rosewood_veneer1_diff_4k.jpg",
+      "maps": {
+        "diffuse": "/assets/textures/rosewood_veneer1_4k/rosewood_veneer1_diff_4k.jpg",
+        "normal": "/assets/textures/rosewood_veneer1_4k/rosewood_veneer1_nor_gl_4k.jpg",
+        "arm": "/assets/textures/rosewood_veneer1_4k/rosewood_veneer1_arm_4k.jpg"
+      }
+    }
+  ]
+}
