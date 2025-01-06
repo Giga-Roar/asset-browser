@@ -3,7 +3,7 @@ import React from 'react';
 function CategorySelector({ selectedCategory, onCategorySelect }) {
     const categories = [
         '3D Models',
-        'Lighting Profiles [HDRIs]',
+        'Lighting Profiles',
         'Materials & Textures',
         'Physics Models'
     ];

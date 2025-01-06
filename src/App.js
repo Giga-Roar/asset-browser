@@ -4,15 +4,17 @@ import AssetBrowser from './AssetBrowser';
 import ImportedModel from './ImportedModel';
 import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls } from '@react-three/drei';
+// import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
+// import * as THREE from 'three';
 import './App.css';
 
 function App() {
   const [assets, setAssets] = useState([]);
   const [activeAsset, setActiveAsset] = useState(null);
-  const [hdrBackground, setHdrBackground] = useState(null); // HDR background state
+  const [hdrBackground, setHdrBackground] = useState(null);
 
   const addAsset = (assetName, assetFile, type) => {
-    if (type === 'Lighting Profile') {
+    if (type === 'Lighting Profile' || assetFile.endsWith('.hdr')) {
       setHdrBackground(assetFile); // Set HDR as the background
     } else {
       setAssets((prevAssets) => [...prevAssets, { name: assetName, file: assetFile }]);
@@ -34,11 +36,14 @@ function App() {
                     fov: 45,
                   }}
                 >
-                  <ambientLight intensity={0.5} />
-                  <directionalLight intensity={50} />
                   <Suspense fallback={null}>
-                    {activeAsset && <ImportedModel assetPath={activeAsset.file} isHDR={activeAsset.file.endsWith('.hdr')} />}
-                    {hdrBackground && <Environment files={hdrBackground} background />} {/* Render HDR background */}
+                    {activeAsset && (
+                      <ImportedModel
+                        assetPath={activeAsset.file}
+                        isHDR={activeAsset.file.endsWith('.hdr')}
+                      />
+                    )}
+                    {hdrBackground && <Environment files={hdrBackground} background />}
                   </Suspense>
                   <OrbitControls />
                 </Canvas>
@@ -54,11 +59,15 @@ function App() {
                   {assets.length > 0 ? (
                     assets.map((asset, index) => (
                       <div key={index} className="asset-item">
-                        <button onClick={() => setActiveAsset(asset)} className='asset_btn'>{asset.name}</button>
+                        <button onClick={() => setActiveAsset(asset)} className="asset_btn">
+                          {asset.name}
+                        </button>
                         <hr />
                       </div>
                     ))
-                  ) : null}
+                  ) : (
+                    <div>No assets added yet.</div>
+                  )}
                 </div>
               </div>
             </div>
