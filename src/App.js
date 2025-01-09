@@ -36,8 +36,8 @@ function App() {
                     fov: 45,
                   }}
                 >
-                  <ambientLight intensity={0.5} />
-                  <directionalLight position={[10, 10, 5]} intensity={1} />
+                  <ambientLight intensity={1.5} />
+                  <directionalLight position={[10, 10, 5]} intensity={1.5} />
                   <Suspense fallback={null}>
                     {activeAsset && (
                       <ImportedModel

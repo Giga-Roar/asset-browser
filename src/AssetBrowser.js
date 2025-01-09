@@ -4,6 +4,8 @@ import CategorySelector from './CategorySelector';
 import SearchBar from './SearchBar';
 import AssetGrid from './AssetGrid';
 import Pagination from './Pagination';
+import UploadAsset from './UploadAsset';
+import { supabase } from './supabaseClient';
 
 function AssetBrowser({ addAsset }) {
     const [selectedCategory, setSelectedCategory] = useState('3D Models');
@@ -12,16 +14,12 @@ function AssetBrowser({ addAsset }) {
     const [assets, setAssets] = useState({});
     const [loading, setLoading] = useState(true);
 
+    // Fetch default assets from the JSON file
     useEffect(() => {
         fetch('/assets.json')
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch assets');
-                }
-                return response.json();
-            })
+            .then((response) => response.json())
             .then((data) => {
-                setAssets(data);
+                setAssets(data); // Set default assets
                 setLoading(false);
             })
             .catch((error) => {
@@ -29,6 +27,39 @@ function AssetBrowser({ addAsset }) {
                 setLoading(false);
             });
     }, []);
+
+    // Fetch uploaded assets from Supabase Storage
+    useEffect(() => {
+        const fetchUploadedAssets = async () => {
+            try {
+                const { data, error } = await supabase.storage
+                    .from('assets')
+                    .list(selectedCategory);
+
+                if (error) throw error;
+
+                const uploadedAssets = await Promise.all(
+                    data.map(async (file) => {
+                        const { data: urlData } = supabase.storage
+                            .from('assets')
+                            .getPublicUrl(`${selectedCategory}/${file.name}`);
+                        return { name: file.name, file: urlData.publicUrl };
+                    })
+                );
+
+                setAssets((prevAssets) => ({
+                    ...prevAssets,
+                    [selectedCategory]: [...(prevAssets[selectedCategory] || []), ...uploadedAssets],
+                }));
+            } catch (error) {
+                console.error('Error fetching uploaded assets:', error);
+            }
+        };
+
+        if (selectedCategory === '3D Models' || selectedCategory === 'Lighting Profiles') {
+            fetchUploadedAssets();
+        }
+    }, [selectedCategory]);
 
     const itemsPerPage = 8;
     const filteredAssets = (assets[selectedCategory] || []).filter((asset) =>
@@ -59,6 +90,18 @@ function AssetBrowser({ addAsset }) {
         }
     };
 
+    const handleUpload = async (assetName, fileUrl, displayImageUrl, category) => {
+        setAssets((prevAssets) => ({
+            ...prevAssets,
+            [category]: [
+                ...(prevAssets[category] || []),
+                { name: assetName, file: fileUrl, displayImage: displayImageUrl },
+            ],
+        }));
+    };
+
+    const isUploadAllowed = selectedCategory === '3D Models' || selectedCategory === 'Lighting Profiles';
+
     return (
         <div>
             <h1>Asset Store</h1>
@@ -77,6 +120,9 @@ function AssetBrowser({ addAsset }) {
                         onNextPage={() => setCurrentPage(currentPage + 1)}
                         onPreviousPage={() => setCurrentPage(currentPage - 1)}
                     />
+                    {isUploadAllowed && (
+                        <UploadAsset onUpload={handleUpload} selectedCategory={selectedCategory} />
+                    )}
                 </>
             )}
         </div>

@@ -50,3 +50,19 @@
 .asset_btn:hover {
     background-color: #45a049;
 }
+
+.texture-list {
+    margin-top: 20px;
+}
+
+.texture-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.texture-item img {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
