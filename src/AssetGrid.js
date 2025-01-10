@@ -1,5 +1,3 @@
-import React from 'react';
-
 function AssetGrid({ assets, onModelImport }) {
     return (
         <div className="category_content">
@@ -11,6 +9,7 @@ function AssetGrid({ assets, onModelImport }) {
                                 <img src={asset.thumbnail} alt={asset.name} />
                             </div>
                             <div className="asset-title">{asset.name}</div>
+                            <div className="asset-price">{asset.price || "FREE"}</div> {/* Default to "FREE" if price is missing */}
                             <button onClick={() => onModelImport(asset)} className="add-to-cart">
                                 Add to Project
                             </button>
@@ -18,10 +17,10 @@ function AssetGrid({ assets, onModelImport }) {
                     ))}
                 </div>
             ) : (
-                <div>No assets found.</div>
+                <div>No valid assets found.</div>
             )}
         </div>
     );
 }
 
-export default AssetGrid;
+export default AssetGrid

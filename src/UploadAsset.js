@@ -4,8 +4,8 @@ import './UploadAsset.css'; // Import the CSS file for styling
 
 function UploadAsset({ onUpload, selectedCategory }) {
     const [file, setFile] = useState(null); // File to upload (e.g., 3D model or HDR)
-    const [displayImage, setDisplayImage] = useState(null); // Display image for the asset
-    const [assetName, setAssetName] = useState(''); // Name for the asset
+    const [thumbnail, setDisplayImage] = useState(null); // Display image for the asset
+    const [name, setname] = useState(''); // Name for the asset
     const [uploading, setUploading] = useState(false); // Uploading state
     const [showRules, setShowRules] = useState(false); // State to control rules box visibility
     const [showModal, setShowModal] = useState(false); // State to control modal visibility
@@ -18,12 +18,12 @@ function UploadAsset({ onUpload, selectedCategory }) {
         setDisplayImage(e.target.files[0]);
     };
 
-    const handleAssetNameChange = (e) => {
-        setAssetName(e.target.value);
+    const handlenameChange = (e) => {
+        setname(e.target.value);
     };
 
     const handleUpload = async () => {
-        if (!file || !assetName || !displayImage) {
+        if (!file || !name || !thumbnail) {
             alert('Please provide a name, upload a file, and select a display image.');
             return;
         }
@@ -32,9 +32,9 @@ function UploadAsset({ onUpload, selectedCategory }) {
 
         try {
             // Upload the main file (e.g., 3D model or HDR) to Supabase Storage
-            const filePath = `${selectedCategory}/${assetName}-${Date.now()}-${file.name}`;
+            const filePath = `${selectedCategory}/${name}-${Date.now()}-${file.name}`;
             const { error: fileUploadError } = await supabase.storage
-                .from('assets') // Replace with your bucket name
+                .from('assets')
                 .upload(filePath, file);
 
             if (fileUploadError) {
@@ -47,10 +47,10 @@ function UploadAsset({ onUpload, selectedCategory }) {
                 .getPublicUrl(filePath);
 
             // Upload the display image to Supabase Storage
-            const displayImagePath = `${selectedCategory}/display-images/${assetName}-${Date.now()}-${displayImage.name}`;
+            const displayImagePath = `${selectedCategory}/display-images/${name}-${Date.now()}-${thumbnail.name}`;
             const { error: imageUploadError } = await supabase.storage
-                .from('assets') // Replace with your bucket name
-                .upload(displayImagePath, displayImage);
+                .from('assets')
+                .upload(displayImagePath, thumbnail);
 
             if (imageUploadError) {
                 throw imageUploadError;
@@ -61,13 +61,21 @@ function UploadAsset({ onUpload, selectedCategory }) {
                 .from('assets')
                 .getPublicUrl(displayImagePath);
 
+            // Create the asset object with the required structure
+            const asset = {
+                name: name, // Use the name provided by the user
+                file: fileUrlData.publicUrl, // URL of the uploaded file
+                price: "FREE", // Add "FREE" as the price
+                thumbnail: displayImageUrlData.publicUrl, // URL of the display image
+            };
+
             // Notify the parent component about the upload
-            onUpload(assetName, fileUrlData.publicUrl, displayImageUrlData.publicUrl, selectedCategory);
+            onUpload(asset, selectedCategory);
 
             // Reset the form
             setFile(null);
             setDisplayImage(null);
-            setAssetName('');
+            setname('');
             setShowModal(false);
         } catch (error) {
             console.error('Error uploading file:', error);
@@ -125,8 +133,8 @@ function UploadAsset({ onUpload, selectedCategory }) {
                             <input
                                 id="asset-name"
                                 type="text"
-                                value={assetName}
-                                onChange={handleAssetNameChange}
+                                value={name}
+                                onChange={handlenameChange}
                                 placeholder="Enter asset name"
                             />
                             <label htmlFor="display-image">Display Image:</label>
@@ -137,12 +145,12 @@ function UploadAsset({ onUpload, selectedCategory }) {
                                 accept="image/*"
                             />
                             <span className="file-name">
-                                {displayImage ? displayImage.name : 'No image chosen'}
+                                {thumbnail ? thumbnail.name : 'No image chosen'}
                             </span>
                         </div>
                         <div className="modal-actions">
                             <button onClick={handleModalToggle}>Cancel</button>
-                            <button onClick={handleUpload} disabled={!assetName || !displayImage || uploading}>
+                            <button onClick={handleUpload} disabled={!name || !thumbnail || uploading}>
                                 {uploading ? 'Uploading...' : 'Confirm Upload'}
                             </button>
                         </div>

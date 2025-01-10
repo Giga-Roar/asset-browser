@@ -39,12 +39,14 @@ function AssetBrowser({ addAsset }) {
                 if (error) throw error;
 
                 const uploadedAssets = await Promise.all(
-                    data.map(async (file) => {
-                        const { data: urlData } = supabase.storage
-                            .from('assets')
-                            .getPublicUrl(`${selectedCategory}/${file.name}`);
-                        return { name: file.name, file: urlData.publicUrl };
-                    })
+                    data
+                        .filter(file => !file.name.startsWith('.empty')) // Filter out empty placeholders
+                        .map(async (file) => {
+                            const { data: urlData } = supabase.storage
+                                .from('assets')
+                                .getPublicUrl(`${selectedCategory}/${file.name}`);
+                            return { name: file.name, file: urlData.publicUrl };
+                        })
                 );
 
                 setAssets((prevAssets) => ({
@@ -63,8 +65,11 @@ function AssetBrowser({ addAsset }) {
 
     const itemsPerPage = 8;
     const filteredAssets = (assets[selectedCategory] || []).filter((asset) =>
-        asset.name.toLowerCase().includes(searchQuery.toLowerCase())
+        asset.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        !asset.name.startsWith('.empty') &&
+        !asset.name.includes('display-images') // Exclude display-images entries
     );
+
     const totalPages = Math.ceil(filteredAssets.length / itemsPerPage);
     const currentItems = filteredAssets.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
@@ -90,12 +95,12 @@ function AssetBrowser({ addAsset }) {
         }
     };
 
-    const handleUpload = async (assetName, fileUrl, displayImageUrl, category) => {
+    const handleUpload = async (asset, category) => {
         setAssets((prevAssets) => ({
             ...prevAssets,
             [category]: [
                 ...(prevAssets[category] || []),
-                { name: assetName, file: fileUrl, displayImage: displayImageUrl },
+                asset, // Add the new asset with the correct structure
             ],
         }));
     };
