@@ -3,25 +3,46 @@ import { supabase } from './supabaseClient'; // Import the Supabase client
 import './UploadAsset.css'; // Import the CSS file for styling
 
 function UploadAsset({ onUpload, selectedCategory }) {
-    const [file, setFile] = useState(null); // File to upload (e.g., 3D model or HDR)
-    const [thumbnail, setDisplayImage] = useState(null); // Display image for the asset
-    const [name, setname] = useState(''); // Name for the asset
-    const [uploading, setUploading] = useState(false); // Uploading state
-    const [showRules, setShowRules] = useState(false); // State to control rules box visibility
-    const [showModal, setShowModal] = useState(false); // State to control modal visibility
+    // State to store the file to upload (e.g., 3D model or HDR)
+    const [file, setFile] = useState(null);
 
+    // State to store the display image for the asset
+    const [thumbnail, setDisplayImage] = useState(null);
+
+    // State to store the name of the asset
+    const [name, setname] = useState('');
+
+    // State to track whether the upload is in progress
+    const [uploading, setUploading] = useState(false);
+
+    // State to control the visibility of the rules box
+    const [showRules, setShowRules] = useState(false);
+
+    // State to control the visibility of the modal for entering asset details
+    const [showModal, setShowModal] = useState(false);
+
+    // Handle file selection
     const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
+        const selectedFile = e.target.files[0];
+        if (selectedFile && !selectedFile.name.endsWith('.fbx')) {
+            alert('Only .fbx files are allowed.');
+            e.target.value = ''; // Clear the file input
+            return;
+        }
+        setFile(selectedFile);
     };
 
+    // Handle display image selection
     const handleDisplayImageChange = (e) => {
         setDisplayImage(e.target.files[0]);
     };
 
+    // Handle changes to the asset name input
     const handlenameChange = (e) => {
         setname(e.target.value);
     };
 
+    // Handle the upload process
     const handleUpload = async () => {
         if (!file || !name || !thumbnail) {
             alert('Please provide a name, upload a file, and select a display image.');
@@ -84,12 +105,14 @@ function UploadAsset({ onUpload, selectedCategory }) {
         }
     };
 
+    // Toggle the visibility of the rules box
     const handleRulesToggle = () => {
-        setShowRules(!showRules); // Toggle rules box visibility
+        setShowRules(!showRules);
     };
 
+    // Toggle the visibility of the modal for entering asset details
     const handleModalToggle = () => {
-        setShowModal(!showModal); // Toggle modal visibility
+        setShowModal(!showModal);
     };
 
     return (

@@ -5,15 +5,20 @@ import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
 import * as THREE from 'three';
 
 function ImportedModel({ assetPath, isHDR }) {
+    // Access the Three.js scene
     const { scene } = useThree();
+
+    // State to store the loaded 3D model
     const [model, setModel] = useState(null);
 
     useEffect(() => {
         if (isHDR) {
+            // Load an HDR environment map if the asset is an HDR file
             const hdrLoader = new RGBELoader();
             hdrLoader.load(
                 assetPath,
                 (texture) => {
+                    // Set the texture mapping and apply it as the background and environment map
                     texture.mapping = THREE.EquirectangularReflectionMapping;
                     scene.background = texture; // Set HDRI as the background
                     scene.environment = texture; // Set HDRI as the environment map for lighting
@@ -24,6 +29,7 @@ function ImportedModel({ assetPath, isHDR }) {
                 }
             );
         } else {
+            // Load a 3D model if the asset is not an HDR file
             const fbxLoader = new FBXLoader();
             fbxLoader.load(
                 assetPath,
@@ -40,6 +46,7 @@ function ImportedModel({ assetPath, isHDR }) {
                         }
                     });
 
+                    // Store the loaded model in state
                     setModel(loadedModel);
                 },
                 undefined,
@@ -49,16 +56,20 @@ function ImportedModel({ assetPath, isHDR }) {
             );
         }
 
+        // Cleanup function to remove the model or HDR environment when the component unmounts
         return () => {
             if (isHDR) {
+                // Remove the HDR background and environment map
                 scene.background = null;
                 scene.environment = null;
             } else if (model) {
+                // Remove the 3D model from the scene
                 scene.remove(model);
             }
         };
-    }, [assetPath, isHDR, scene, model]);
+    }, [assetPath, isHDR, scene, model]); // Re-run the effect if any of these dependencies change
 
+    // Render the 3D model if it has been loaded
     return model ? <primitive object={model} /> : null;
 }
 
